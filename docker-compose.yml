@@ -1,0 +1,34 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: paus
+      ME_CONFIG_MONGODB_ADMINPASSWORD: paus_suap
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: paus
+      MONGO_INITDB_ROOT_PASSWORD: paus_suap
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+
+volumes:
+  mongodb:
+  mongodb_config:
+# docker-compose up -d //start all containers
+# docker-compose down //delete all container witout volumes
+# docker volume ls
+# docker volume prune //delete unused volumes

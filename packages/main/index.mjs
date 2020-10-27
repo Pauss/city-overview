@@ -1,16 +1,21 @@
 import express from 'express'
 import {} from 'dotenv/config.js'
+import Debug from 'debug'
 
-import { connection } from '../db/connection.mjs'
+import { connection } from 'db'
+import { displayRestaurants } from 'maps-api'
 
 const app = express()
 
 const port = process.env.PORT || 3000
 
+const debug = Debug('main')
+
 app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-console.log(connection.name)
+debug(connection.name)
+await displayRestaurants()
 
-app.listen(port, () => console.log(`Listening on port ${port}...`))
+app.listen(port, () => debug(`Listening on port ${port}...`))

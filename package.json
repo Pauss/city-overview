@@ -2,10 +2,10 @@
   "name": "city-overview",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "lerna run test echo \"Error: no test specified\" && exit 1",
-    "start": " nodemon ./packages/main/index.mjs"
+    "start": "DEBUG=main,mongoDB nodemon ./packages/main/index.mjs"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +13,8 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "maps-api":"^1.0.0"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
