@@ -16,6 +16,6 @@ app.get('/', (req, res) => {
 })
 
 debug(connection.name)
-await displayRestaurants()
+//await displayRestaurants()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))
