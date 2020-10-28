@@ -2,8 +2,8 @@ import express from 'express'
 import {} from 'dotenv/config.js'
 import Debug from 'debug'
 
-import { connection } from 'db'
-import { displayRestaurants } from 'maps-api'
+import { mongoose } from 'db'
+import { displayCity } from 'maps-api'
 
 const app = express()
 
@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-debug(connection.name)
-//await displayRestaurants()
+debug(mongoose.connection.name)
+await displayCity()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))

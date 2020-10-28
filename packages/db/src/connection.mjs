@@ -19,6 +19,4 @@ try {
   debug('Could not connect to MongoDB...')
 }
 
-const connection = mongoose.connection
-
-export { connection }
+export { mongoose }
