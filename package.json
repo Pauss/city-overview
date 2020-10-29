@@ -5,7 +5,7 @@
   "main": "index.mjs",
   "scripts": {
     "test": "lerna run test echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=main,mongoDB nodemon ./packages/main/index.mjs"
+    "start": "DEBUG=main,mongoDB,maps-api-searcher nodemon ./packages/main/index.mjs"
   },
   "keywords": [],
   "author": "",

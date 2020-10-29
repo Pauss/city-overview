@@ -6,70 +6,120 @@
 //method : add to DB
 
 import axios from 'axios'
+import Debug from 'debug'
+import { placeSchema } from '../../db/models/place.mjs'
+
+const debug = Debug('maps-api-searcher')
 
 class Searcher {
-  queryPlace = [
-    'restaurant'
-    // 'hospital',
-    // 'airport',
-    // 'bank',
-    // 'fire_station',
-    // 'museum',
-    // 'movie_theater',
-    // 'park',
-    // 'secondary_school',
-    // 'univeristy',
-    // 'shopping_mall',
-    // 'supermarket',
-    // 'tourist_attraction',
-    // 'zoo'
-  ]
   queryString = 'hotels'
-  city = ''
+  cityName = ''
   rootURL = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+  cityInfo = { placeType: 'city', placeData: {} }
+  placesInfo = [
+    { placeType: 'restaurant', placeData: {} },
+    { placeType: 'hospital', placeData: {} }
+    // { placeType: 'airport', placeData: {} },
+    // { placeType: 'bank', placeData: {} },
+    // { placeType: 'fire_station', placeData: {} },
+    // { placeType: 'museum', placeData: {} },
+    // { placeType: 'movie_theater', placeData: {} },
+    // { placeType: 'park', placeData: {} },
+    // { placeType: 'secondary_school', placeData: {} },
+    // { placeType: 'univeristy', placeData: {} },
+    // { placeType: 'shopping_mall', placeData: {} },
+    // { placeType: 'supermarket', placeData: {} },
+    // { placeType: 'zoo', placeData: {} },
+    // { placeType: 'tourist_attraction', placeData: {} }
+  ]
+  hotelsInfo = { placeType: 'hotels', placeData: {} }
+  onePlaceInfo = { placeType: '', placeData: {} }
 
-  constructor(city) {
-    this.city = city
+  constructor(cityName) {
+    this.cityName = cityName
   }
 
   async findCity() {
-    const params = { query: this.city, key: process.env.API_KEY }
+    const params = { query: this.cityName, key: process.env.API_KEY }
     try {
       const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })
-      return response.data
+      this.cityInfo.placeData = response.data
+
+      debug(this.cityInfo)
     } catch (error) {
-      console.log(`maps-api find-city error: ${error}`)
+      debug(`maps-api find-city error: ${error}`)
     }
   }
 
-  async findPlace() {
-    let api_results = []
-
+  async findPlaces() {
     //Promise function for API call
-    const fn = (place) => {
-      const params = { query: this.city, key: process.env.API_KEY, type: place }
+    let placesDataResults = []
+
+    const fn = ({ placeType }) => {
+      const params = { query: this.cityName, key: process.env.API_KEY, type: placeType }
       return axios(this.rootURL, { params, timeout: 1000 * 60 })
     }
 
     //map forEach place an API call
-    var requests = this.queryPlace.map(fn)
+    var requests = this.placesInfo.map(fn)
     try {
       const results = await Promise.all(requests)
-      api_results = results.map((r) => r.data)
-      return api_results
+      placesDataResults = results.map((response) => {
+        return response.data
+      })
+      //update this.placesInfo.placeData
+      this.placesInfo.forEach((el, index) => {
+        el.placeData = placesDataResults[index]
+      })
     } catch (error) {
-      console.log(`maps-api find-place error: ${error}`)
+      debug(`maps-api find-places error: ${error}`)
     }
   }
 
   async findHotles() {
-    const params = { query: `${this.queryString} in ${this.city}`, key: process.env.API_KEY }
+    const params = {
+      query: `${this.queryString} in ${this.cityName}`,
+      key: process.env.API_KEY,
+      pagetoken: this.hotlesInfo.next_page_token
+    }
     try {
       const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })
-      return response.data
+      this.hotelsInfo.placeData = response.data
     } catch (error) {
-      console.log(`maps-api find-hotels error: ${error}`)
+      debug(`maps-api find-hotels error: ${error}`)
     }
+  }
+
+  async findOnePlace(placeType, next_page_token) {
+    const params = {
+      query: this.cityName,
+      key: process.env.API_KEY,
+      type: placeType,
+      pagetoken: next_page_token
+    }
+    try {
+      const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })
+      this.onePlaceInfo.placeType = placeType
+      this.onePlaceInfo.placeData = response.data
+    } catch (error) {
+      debug(`maps-api find-one-place error: ${error}`)
+    }
+  }
+
+  getCityInfo() {
+    return this.cityInfo
+  }
+
+  getPlacesInfo() {
+    return this.placesInfo
+  }
+
+  getHotelsInfo() {
+    return this.hotlesInfo
+  }
+
+  getOnePlaceInfo() {
+    return this.onePlaceInfo
   }
 }
 

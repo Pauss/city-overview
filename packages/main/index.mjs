@@ -3,7 +3,7 @@ import {} from 'dotenv/config.js'
 import Debug from 'debug'
 
 import { mongoose } from 'db'
-import { displayCity } from 'maps-api'
+import { getAndDisplayData } from 'maps-api'
 
 const app = express()
 
@@ -16,6 +16,6 @@ app.get('/', (req, res) => {
 })
 
 debug(mongoose.connection.name)
-await displayCity()
+await getAndDisplayData()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))

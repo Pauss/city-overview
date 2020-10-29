@@ -1,1 +1,1 @@
-export * from './src/text-search.mjs'
+export * from './src/PrepareData.mjs'
