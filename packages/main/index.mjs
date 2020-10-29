@@ -2,8 +2,7 @@ import express from 'express'
 import {} from 'dotenv/config.js'
 import Debug from 'debug'
 
-import { mongoose } from 'db'
-import { getAndDisplayData } from 'maps-api'
+import { PreparedSearcher } from 'maps-api'
 
 const app = express()
 
@@ -15,7 +14,7 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-debug(mongoose.connection.name)
-await getAndDisplayData()
+const prepareSearch = new PreparedSearcher('Suceava')
+prepareSearch.verifyAPIResult()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))
