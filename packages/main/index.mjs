@@ -14,7 +14,8 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-const prepareSearch = new PreparedSearcher('Suceava')
-prepareSearch.verifyAPIResult()
+const prepareSearch = new PreparedSearcher('Falticeni')
+await prepareSearch.verifyAPIResult()
+prepareSearch.composeCityForDB()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))
