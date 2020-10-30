@@ -28,55 +28,68 @@ class PreparedSearcher extends Searcher {
     //await this.findHotels()
   }
 
+  checkPlace(place) {
+    let { formatted_address } = place
+
+    const name = this.cityName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    const regex = new RegExp(name, 'g')
+
+    const norm_address = formatted_address.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
+    if (norm_address.match(regex) != null) return place
+  }
+
   async verifyAPIResult() {
     await this.makeAPICall()
 
     const regex = new RegExp(this.cityName, 'g')
 
-    if (this.cityInfo.placeData.results.length > 1) {
+    //TODO : check if results > 0 , check if results > 1, make a sepparate function to check if place is form city input
+
+    if (this.cityInfo.placeData.results === undefined) {
+      this.city = []
+    } else if (this.cityInfo.placeData.results.length > 1) {
       let cityResult = this.cityInfo.placeData.results.filter((place) => {
-        if (place.formatted_address.match(regex) != null) return place
+        return this.checkPlace(place)
       })
       this.city = cityResult
-    } else {
-      this.city = this.cityInfo.placeData.results
+    } else if (this.cityInfo.placeData.results.length === 1) {
+      this.city.push(this.checkPlace(this.cityInfo.placeData.results[0]))
     }
 
-    //this.placeInfo.placeData.results.filter
-
-    let placesResult = []
-    this.placesInfo.forEach((placeInfo) => {
-      placesResult = placeInfo.placeData.results.filter((place) => {
-        let norm = place.formatted_address
-        norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        if (norm.match(regex) != null) return place
-      })
-      this.places.push({ placeType: placeInfo.placeType, placeData: placesResult })
-    })
-
-    console.log(
-      `length before filter: ${this.placesInfo[0].placeData.results.length} length after filter: ${this.places[0].placeData.length}`
-    )
-    this.places.forEach((place, index) => {
-      console.log(`length before filter: ${this.placesInfo[index].placeData.results.length} length after filter: ${place.placeData.length}`)
-      console.log(place.placeType, place.placeData)
-    })
-
-    // //this.hotlesInfo.results.filter
-    // let hotelsResult = this.hotelsInfo.placeData.results.filter((place) => {
-    //   if (place.formatted_address.match(regex) != null) return place
+    // let placesResult = []
+    // this.placesInfo.forEach((placeInfo) => {
+    //   //todo Check if results is gratter than 1
+    //   placesResult = placeInfo.placeData.results.filter((place) => {
+    //     let norm = place.formatted_address
+    //     norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    //     if (norm.match(regex) != null) return place
+    //   })
+    //   this.places.push({ placeType: placeInfo.placeType, placeData: placesResult })
     // })
-    // this.hotels = hotelsResult
+
+    // if (this.hotlesInfo.placeData.results.length > 1) {
+    //   let hotlesResult = this.cityInfo.placeData.results.filter((place) => {
+    //     let norm = place.formatted_address
+    //     norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    //     if (norm.match(regex) != null) return place
+    //   })
+    //   this.city = hotlesResult
+    // } else {
+    //   this.city = this.hotelsInfo.placeData.results
+    // }
   }
 
   composeCityForDB() {
     this.cityComplete.name = this.cityName
 
-    let objectCity = this.city[0]
+    if (this.city.length) {
+      let objectCity = this.city[0]
 
-    Object.keys(objectCity).forEach((key) => {
-      this.cityComplete[key] = objectCity[key]
-    })
+      Object.keys(objectCity).forEach((key) => {
+        this.cityComplete[key] = objectCity[key]
+      })
+    }
 
     // let objectPlaces = this.places
 
@@ -91,7 +104,7 @@ class PreparedSearcher extends Searcher {
     // this.cityComplete.hotels = this.hotels
 
     //console.log(JSON.stringify(this.cityComplete, null, 2))
-    //console.log(this.cityComplete)
+    console.log(this.cityComplete)
   }
 }
 
