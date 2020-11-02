@@ -13,7 +13,7 @@ const db_connect = {
 }
 
 try {
-  const connect = await mongoose.connect(db_connect.url_db, db_connect.params)
+  await mongoose.connect(db_connect.url_db, db_connect.params)
   debug('Connected to MongoDB...')
 } catch (err) {
   debug('Could not connect to MongoDB...')

@@ -2,10 +2,11 @@
   "name": "city-overview",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "lerna run test echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=main,mongoDB,maps-api-searcher nodemon ./packages/main/index.mjs"
+    "start": "DEBUG=main,mongoDB,maps-api-searcher nodemon ./packages/main/index.js"
   },
   "keywords": [],
   "author": "",

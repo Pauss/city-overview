@@ -1,5 +1,5 @@
-import { mongoose } from './connection.mjs'
-import { City } from '../models/city.mjs'
+import { mongoose } from './connection.js'
+import { City } from '../models/city.js'
 
 const connection = mongoose.connection
 

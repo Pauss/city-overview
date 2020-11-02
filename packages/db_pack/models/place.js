@@ -1,4 +1,4 @@
-import { mongoose } from '../src/connection.mjs'
+import { mongoose } from '../src/connection.js'
 
 const placeSchema = new mongoose.Schema({
   name: {

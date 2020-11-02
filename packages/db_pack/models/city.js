@@ -1,5 +1,5 @@
-import { mongoose } from '../src/connection.mjs'
-import { placeSchema } from './place.mjs'
+import { mongoose } from '../src/connection.js'
+import { placeSchema } from './place.js'
 
 const citySchema = new mongoose.Schema({
   name: {
@@ -35,6 +35,5 @@ const citySchema = new mongoose.Schema({
   }
 })
 
-const City = mongoose.model('City', citySchema)
-
+let City = mongoose.model('City', citySchema)
 export { City }

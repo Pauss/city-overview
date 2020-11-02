@@ -1,13 +1,5 @@
-//class Searcher
-//[types] : [resturants, museum, hospitals ...]
-//method : if city not in DB then make query for API search, otherwise take data from DB.
-//method: find data - api call for all place-types
-//method : select from find (check places are placed in the 'input City')
-//method : add to DB
-
 import axios from 'axios'
 import Debug from 'debug'
-import { placeSchema } from '../../db/models/place.mjs'
 
 const debug = Debug('maps-api-searcher')
 
@@ -44,8 +36,6 @@ class Searcher {
     try {
       const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })
       this.cityInfo.placeData = response.data
-
-      debug(this.cityInfo)
     } catch (error) {
       debug(`maps-api find-city error: ${error}`)
     }
@@ -76,11 +66,11 @@ class Searcher {
     }
   }
 
-  async findHotles() {
+  async findHotels() {
     const params = {
       query: `${this.queryString} in ${this.cityName}`,
-      key: process.env.API_KEY,
-      pagetoken: this.hotlesInfo.next_page_token
+      key: process.env.API_KEY
+      // TODO pagetoken: this.hotlesInfo.next_page_token
     }
     try {
       const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })

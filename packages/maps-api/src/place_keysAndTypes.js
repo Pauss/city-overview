@@ -7,12 +7,15 @@ const placeKeys = [
   'museums',
   'movie_theaters',
   'parks',
-  'secondary_schools',
+
   'shopping_malls',
   'supermarkets',
-  'tourist_attraction',
+  'secondary_schools',
   'universities',
-  'zoo'
+  'shopping_malls',
+  'supermarkets',
+  'zoo',
+  'tourist_attraction'
 ]
 
 const placeTypes = [

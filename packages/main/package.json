@@ -2,12 +2,13 @@
   "name": "main",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "index.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "db": "^1.0.0",
+    "db_pack": "^1.0.0",
     "maps-api":"^1.0.0"
   },
   "keywords": [],

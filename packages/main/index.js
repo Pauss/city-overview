@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 })
 
 const prepareSearch = new PreparedSearcher('Falticeni')
-await prepareSearch.verifyAPIResult()
-prepareSearch.composeCityForDB()
+
+await prepareSearch.composeCityForDB()
 
 app.listen(port, () => debug(`Listening on port ${port}...`))
