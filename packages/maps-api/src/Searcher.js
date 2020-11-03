@@ -26,6 +26,7 @@ class Searcher {
   ]
   hotelsInfo = { placeType: 'hotels', placeData: {} }
   onePlaceInfo = { placeType: '', placeData: {} }
+  moreHotelsInfo = { placeType: 'hotels', placeData: {} }
 
   constructor(cityName) {
     this.cityName = cityName
@@ -80,6 +81,20 @@ class Searcher {
     }
   }
 
+  async findMoreHotels(next_page_token) {
+    const params = {
+      query: `${this.queryString} in ${this.cityName}`,
+      key: process.env.API_KEY,
+      pagetoken: next_page_token
+    }
+    try {
+      const response = await axios(this.rootURL, { params, timeout: 1000 * 60 })
+      this.moreHotelsInfo.placeData = response.data
+    } catch (error) {
+      debug(`maps-api find-hotels error: ${error}`)
+    }
+  }
+
   async findOnePlace(placeType, next_page_token) {
     const params = {
       query: this.cityName,
@@ -94,22 +109,6 @@ class Searcher {
     } catch (error) {
       debug(`maps-api find-one-place error: ${error}`)
     }
-  }
-
-  getCityInfo() {
-    return this.cityInfo
-  }
-
-  getPlacesInfo() {
-    return this.placesInfo
-  }
-
-  getHotelsInfo() {
-    return this.hotlesInfo
-  }
-
-  getOnePlaceInfo() {
-    return this.onePlaceInfo
   }
 }
 

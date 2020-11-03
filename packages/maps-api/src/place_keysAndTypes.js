@@ -1,22 +1,19 @@
-const placeKeys = [
-  'restaurants',
-  'hospitals',
-  'airports',
-  'banks',
-  'fire_station',
-  'museums',
-  'movie_theaters',
-  'parks',
-
-  'shopping_malls',
-  'supermarkets',
-  'secondary_schools',
-  'universities',
-  'shopping_malls',
-  'supermarkets',
-  'zoo',
-  'tourist_attraction'
-]
+const placeKeysTypes = {
+  restaurants: 'restaurant',
+  hospitals: 'hospital',
+  airports: 'airport',
+  banks: 'bank',
+  fire_station: 'fire_station',
+  museums: 'museum',
+  movie_theaters: 'movie_theater',
+  parks: 'park',
+  secondary_schools: 'secondary_school',
+  universities: 'univeristy',
+  shopping_malls: 'shopping_mall',
+  supermarkets: 'supermarket',
+  zoo: 'zoo',
+  tourist_attraction: 'tourist_attraction'
+}
 
 const placeTypes = [
   'restaurant',
@@ -35,4 +32,4 @@ const placeTypes = [
   'tourist_attraction'
 ]
 
-export { placeKeys, placeTypes }
+export { placeKeysTypes, placeTypes }
