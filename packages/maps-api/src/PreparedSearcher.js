@@ -41,167 +41,167 @@ class PreparedSearcher extends Searcher {
   }
 
   async filterAPICityResult() {
-    const resultsNumber = this.checkResultsNumber(this.cityInfo.placeData.results)
-
-    switch (resultsNumber) {
-      case APICall.NO_RESULTS:
-        break
-      case APICall.ONE_RESULT:
-        this.cityInfo.placeData.results[0] = deepcopy(this.checkInCity(this.cityInfo.placeData.results[0]))
-        break
-      case APICall.MANY_RESULTS:
-        let res = this.cityInfo.placeData.results.filter((place) => {
-          return this.checkInCity(place)
-        })
-        this.cityInfo.placeData.results = deepcopy(res)
-        break
-      default:
-        break
-    }
-  }
-
-  async filterAPIPlacesResult() {
-    this.placesInfo.forEach((place, index) => {
-      const resultsNumber = this.checkResultsNumber(place.placeData.results)
+    if (this.cityInfo.placeData) {
+      const resultsNumber = this.checkResultsNumber(this.cityInfo.placeData.results)
 
       switch (resultsNumber) {
         case APICall.NO_RESULTS:
           break
         case APICall.ONE_RESULT:
-          place.placeData.results[0] = deepcopy(this.checkInCity(place.placeData.results[0]))
+          this.cityInfo.placeData.results[0] = deepcopy(this.checkInCity(this.cityInfo.placeData.results[0]))
           break
         case APICall.MANY_RESULTS:
-          let res = place.placeData.results.filter((oneplace) => {
-            return this.checkInCity(oneplace)
+          let res = this.cityInfo.placeData.results.filter((place) => {
+            return this.checkInCity(place)
           })
-          place.placeData.results = deepcopy(res)
+          this.cityInfo.placeData.results = deepcopy(res)
           break
         default:
           break
       }
-    })
+    }
+  }
+
+  async filterAPIPlacesResult() {
+    debug('filter: ', this.placesInfo[0].placeData.results)
+    if (this.placesInfo.placeData) {
+      this.placesInfo.forEach((place, index) => {
+        const resultsNumber = this.checkResultsNumber(place.placeData.results)
+
+        switch (resultsNumber) {
+          case APICall.NO_RESULTS:
+            break
+          case APICall.ONE_RESULT:
+            place.placeData.results[0] = deepcopy(this.checkInCity(place.placeData.results[0]))
+            break
+          case APICall.MANY_RESULTS:
+            let res = place.placeData.results.filter((oneplace) => {
+              return this.checkInCity(oneplace)
+            })
+            place.placeData.results = deepcopy(res)
+            break
+          default:
+            break
+        }
+      })
+    }
   }
 
   async filterAPIHotelsResult() {
-    const resultsNumber = this.checkResultsNumber(this.hotelsInfo.placeData.results)
+    if (this.hotelsInfo.placeData) {
+      const resultsNumber = this.checkResultsNumber(this.hotelsInfo.placeData.results)
 
-    switch (resultsNumber) {
-      case APICall.NO_RESULTS:
-        break
-      case APICall.ONE_RESULT:
-        this.hotelsInfo.placeData.results[0] = deepcopy(this.checkInCity(this.hotelsInfo.placeData.results[0]))
-        break
-      case APICall.MANY_RESULTS:
-        let res = this.hotelsInfo.placeData.results.filter((place) => {
-          return this.checkInCity(place)
-        })
-        this.hotelsInfo.placeData.results = deepcopy(res)
-        break
-      default:
-        break
+      switch (resultsNumber) {
+        case APICall.NO_RESULTS:
+          break
+        case APICall.ONE_RESULT:
+          this.hotelsInfo.placeData.results[0] = deepcopy(this.checkInCity(this.hotelsInfo.placeData.results[0]))
+          break
+        case APICall.MANY_RESULTS:
+          let res = this.hotelsInfo.placeData.results.filter((place) => {
+            return this.checkInCity(place)
+          })
+          this.hotelsInfo.placeData.results = deepcopy(res)
+          break
+        default:
+          break
+      }
     }
   }
 
   async filterAPIOnePlaceResult() {
-    const resultsNumber = this.checkResultsNumber(this.onePlaceInfo.placeData.results)
+    if (this.onePlaceInfo.placeData) {
+      const resultsNumber = this.checkResultsNumber(this.onePlaceInfo.placeData.results)
 
-    switch (resultsNumber) {
-      case APICall.NO_RESULTS:
-        break
-      case APICall.ONE_RESULT:
-        this.onePlace.placeData.results[0] = deeepcopy(this.checkInCity(this.onePlaceInfo.placeData.results[0]))
-        break
-      case APICall.MANY_RESULTS:
-        let res = this.onePlaceInfo.placeData.results.filter((place) => {
-          return this.checkInCity(place)
-        })
-        this.onePlaceInfo.placeData.results = deepcopy(res)
-        break
-      default:
-        break
+      switch (resultsNumber) {
+        case APICall.NO_RESULTS:
+          break
+        case APICall.ONE_RESULT:
+          this.onePlace.placeData.results[0] = deeepcopy(this.checkInCity(this.onePlaceInfo.placeData.results[0]))
+          break
+        case APICall.MANY_RESULTS:
+          let res = this.onePlaceInfo.placeData.results.filter((place) => {
+            return this.checkInCity(place)
+          })
+          this.onePlaceInfo.placeData.results = deepcopy(res)
+          break
+        default:
+          break
+      }
     }
   }
 
   async checkPlacesCompletness() {
-    await this.findPlaces()
+    if (this.placesInfo) {
+      this.places = deepcopy(this.placesInfo)
 
-    await this.filterAPIPlacesResult()
+      for (let index = 0; index < this.places.length; index++) {
+        while (
+          this.places[index].placeData.results.length === MAX_API_RESULTS &&
+          this.places[index].placeData.next_page_token !== undefined
+        ) {
+          const token = this.places[index].placeData.next_page_token
+          const myType = this.places[index].placeType
 
-    this.places = deepcopy(this.placesInfo)
+          await sleep(2000)
 
-    for (let index = 0; index < this.places.length; index++) {
-      while (
-        this.places[index].placeData.results.length === MAX_API_RESULTS &&
-        this.places[index].placeData.next_page_token !== undefined
-      ) {
-        const token = this.places[index].placeData.next_page_token
-        const myType = this.places[index].placeType
+          await this.findOnePlace(myType, token)
 
-        await sleep(2000)
+          //let thisOnePlaceInfo = deepcopy(this.onePlaceInfo)
 
-        await this.findOnePlace(myType, token)
+          await this.filterAPIOnePlaceResult() //modifies this.onePlaceInfo
 
-        //let thisOnePlaceInfo = deepcopy(this.onePlaceInfo)
+          let copy = deepcopy(this.places[index].placeData.results)
 
-        await this.filterAPIOnePlaceResult() //modifies this.onePlaceInfo
+          this.places[index] = deepcopy(this.onePlaceInfo)
 
-        let copy = deepcopy(this.places[index].placeData.results)
+          let fullCopy = this.places[index].placeData.results.concat(copy)
 
-        this.places[index] = deepcopy(this.onePlaceInfo)
+          this.places[index].placeData.results = deepcopy(fullCopy)
 
-        let fullCopy = this.places[index].placeData.results.concat(copy)
-
-        this.places[index].placeData.results = deepcopy(fullCopy)
-
-        debug(this.places[index].placeData.results.length)
+          debug(this.places[index].placeData.results.length)
+        }
       }
     }
   }
 
   async checkHotelsCompletness() {
-    await this.findHotels()
+    if (this.hotelsInfo.placeData) {
+      this.hotels = deepcopy(this.hotelsInfo)
 
-    await this.filterAPIHotelsResult()
+      while (this.hotels.placeData.results.length >= MAX_API_RESULTS && this.hotels.placeData.next_page_token !== undefined) {
+        const token = this.hotels.placeData.next_page_token
 
-    this.hotels = deepcopy(this.hotelsInfo)
+        await sleep(2000)
 
-    while (this.hotels.placeData.results.length >= MAX_API_RESULTS && this.hotels.placeData.next_page_token !== undefined) {
-      const token = this.hotels.placeData.next_page_token
+        await this.findMoreHotels(token) //add into moreHotelsInfo
 
-      await sleep(2000)
+        let thisHotelsCopyResults = deepcopy(this.hotels.placeData.results)
 
-      await this.findMoreHotels(token) //add into moreHotelsInfo
+        this.hotels = deepcopy(this.moreHotelsInfo)
 
-      let thisHotelsCopyResults = deepcopy(this.hotels.placeData.results)
+        debug(this.moreHotelsInfo)
 
-      this.hotels = deepcopy(this.moreHotelsInfo)
+        this.hotelsInfo = deepcopy(this.moreHotelsInfo)
 
-      debug(this.moreHotelsInfo)
+        await this.filterAPIHotelsResult() //change this.hotelsInfo
 
-      this.hotelsInfo = deepcopy(this.moreHotelsInfo)
+        let fullCopy = thisHotelsCopyResults.concat(this.hotelsInfo.placeData.results)
 
-      await this.filterAPIHotelsResult() //change this.hotelsInfo
+        this.hotels.placeData.results = deepcopy(fullCopy)
 
-      let fullCopy = thisHotelsCopyResults.concat(this.hotelsInfo.placeData.results)
-
-      this.hotels.placeData.results = deepcopy(fullCopy)
-
-      debug('results length : ', this.hotels.placeData.results.length)
+        debug('results length : ', this.hotels.placeData.results.length)
+      }
     }
   }
 
   async composeCityForDB() {
-    this.cityComplete.name = this.cityName
+    const normName = this.cityName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    this.cityComplete.name = normName
 
-    await this.findCity()
-    await this.filterAPICityResult()
+    if (this.cityInfo.placeData) {
+      this.city = deepcopy(this.cityInfo)
 
-    //this.city.placeType
-    //this.city.placeData.results[Object]
-
-    this.city = deepcopy(this.cityInfo)
-
-    if (this.city.placeData) {
       if (this.city.placeData.results.length) {
         let objectCity = this.city.placeData.results[0]
 
@@ -211,37 +211,26 @@ class PreparedSearcher extends Searcher {
       }
     }
 
-    await this.checkPlacesCompletness()
+    debug(this.places)
 
-    // await this.findPlaces()
+    if (this.placesInfo) {
+      Object.keys(this.cityComplete).forEach((key) => {
+        if (Object.keys(placeKeysTypes).includes(key)) {
+          let matchedKey = placeKeysTypes[key]
+          this.places.forEach((place) => {
+            if (matchedKey === place.placeType) {
+              this.cityComplete[key] = deepcopy(place.placeData.results)
+            }
+          })
+        }
+      })
+    }
 
-    // await this.filterAPIPlacesResult()
-    // this.places = deepcopy(this.placesInfo)
-
-    Object.keys(this.cityComplete).forEach((key) => {
-      if (Object.keys(placeKeysTypes).includes(key)) {
-        let matchedKey = placeKeysTypes[key]
-        this.places.forEach((place) => {
-          if (matchedKey === place.placeType) {
-            this.cityComplete[key] = deepcopy(place.placeData.results)
-          }
-        })
-      }
-    })
-
-    //await this.findHotels()
-    //await this.filterAPIHotelsResult()
-
-    //await this.checkHotelsCompletness()
-
-    //this.hotels.placeData.results[Object]
     if (this.hotels.placeData) {
       this.hotels.placeData.results.forEach((hotel, index) => {
         this.cityComplete.hotels[index] = deepcopy(hotel)
       })
     }
-
-    //debug(JSON.stringify(this.cityComplete, null, 2))
     debug(this.cityComplete)
   }
 }

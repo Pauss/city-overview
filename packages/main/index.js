@@ -1,8 +1,7 @@
 import express from 'express'
 import {} from 'dotenv/config.js'
 import Debug from 'debug'
-
-import { PreparedSearcher } from 'maps-api'
+import { requestCity } from './src/core.js'
 
 const app = express()
 
@@ -14,8 +13,6 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-const prepareSearch = new PreparedSearcher('Falticeni')
-
-await prepareSearch.composeCityForDB()
+await requestCity('Suceava')
 
 app.listen(port, () => debug(`Listening on port ${port}...`))

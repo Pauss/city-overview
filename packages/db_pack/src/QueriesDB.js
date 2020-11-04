@@ -1,23 +1,27 @@
 import { mongoose } from './connection.js'
 import { City } from '../models/city.js'
+import Debug from 'debug'
+
+const debug = Debug('db-queries')
 
 const connection = mongoose.connection
 
 class QueriesDB {
-  constructor(cityName) {
-    this.cityName = cityName
-  }
-
-  async checkCity(cityName) {
-    //check if city is prestent in DB
-
+  async checkCityInDB(cityName) {
+    //check if city is present in DB
     let result = await City.find({ name: cityName })
-    if (result) return true
+    if (result.length) return true
     return false
   }
 
   async addCity(cityObject) {
-    const result = await checkCity('Suceava')
-    console.log('City in DB : ', result)
+    let newCity = new City(cityObject)
+
+    const result = await newCity.save()
+    return result
   }
 }
+
+let queriesDB = new QueriesDB()
+
+export { queriesDB }

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "lerna run test echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=main,mongoDB,maps-api-searcher,maps-api-prepared node ./packages/main/index.js"
+    "start": "DEBUG=main,db-connection,maps-api-searcher,maps-api-prepared,db-queries node ./packages/main/index.js"
   },
   "keywords": [],
   "author": "",

@@ -10,19 +10,19 @@ class Searcher {
   cityInfo = { placeType: 'city', placeData: {} }
   placesInfo = [
     { placeType: 'restaurant', placeData: {} },
-    { placeType: 'hospital', placeData: {} }
-    // { placeType: 'airport', placeData: {} },
-    // { placeType: 'bank', placeData: {} },
-    // { placeType: 'fire_station', placeData: {} },
-    // { placeType: 'museum', placeData: {} },
-    // { placeType: 'movie_theater', placeData: {} },
-    // { placeType: 'park', placeData: {} },
-    // { placeType: 'secondary_school', placeData: {} },
-    // { placeType: 'univeristy', placeData: {} },
-    // { placeType: 'shopping_mall', placeData: {} },
-    // { placeType: 'supermarket', placeData: {} },
-    // { placeType: 'zoo', placeData: {} },
-    // { placeType: 'tourist_attraction', placeData: {} }
+    { placeType: 'hospital', placeData: {} },
+    { placeType: 'airport', placeData: {} },
+    { placeType: 'bank', placeData: {} },
+    { placeType: 'fire_station', placeData: {} },
+    { placeType: 'museum', placeData: {} },
+    { placeType: 'movie_theater', placeData: {} },
+    { placeType: 'park', placeData: {} },
+    { placeType: 'secondary_school', placeData: {} },
+    { placeType: 'univeristy', placeData: {} },
+    { placeType: 'shopping_mall', placeData: {} },
+    { placeType: 'supermarket', placeData: {} },
+    { placeType: 'zoo', placeData: {} },
+    { placeType: 'tourist_attraction', placeData: {} }
   ]
   hotelsInfo = { placeType: 'hotels', placeData: {} }
   onePlaceInfo = { placeType: '', placeData: {} }
