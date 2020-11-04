@@ -63,8 +63,7 @@ class PreparedSearcher extends Searcher {
   }
 
   async filterAPIPlacesResult() {
-    debug('filter: ', this.placesInfo[0].placeData.results)
-    if (this.placesInfo.placeData) {
+    if (this.placesInfo) {
       this.placesInfo.forEach((place, index) => {
         const resultsNumber = this.checkResultsNumber(place.placeData.results)
 
@@ -210,8 +209,6 @@ class PreparedSearcher extends Searcher {
         })
       }
     }
-
-    debug(this.places)
 
     if (this.placesInfo) {
       Object.keys(this.cityComplete).forEach((key) => {

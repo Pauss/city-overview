@@ -13,6 +13,6 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-await requestCity('Suceava')
+await requestCity('Iasi')
 
 app.listen(port, () => debug(`Listening on port ${port}...`))

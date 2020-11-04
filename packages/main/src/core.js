@@ -25,16 +25,16 @@ async function createApiCity(cityName) {
     // 1.find city and all places:
     await preparedSearch.findCity()
     await preparedSearch.findPlaces()
-    //await preparedSearch.findHotels()
+    await preparedSearch.findHotels()
 
     // 2.filter results:
     await preparedSearch.filterAPICityResult()
     await preparedSearch.filterAPIPlacesResult()
-    //await preparedSearch.filterAPIHotelsResult()
+    await preparedSearch.filterAPIHotelsResult()
 
     // 3.do more API calls where more than one API call is needed (API returns only 20 rows)
     await preparedSearch.checkPlacesCompletness()
-    //await preparedSearch.checkHotelsCompletness()
+    await preparedSearch.checkHotelsCompletness()
 
     // 4.bring all data in one place
     await preparedSearch.composeCityForDB()
