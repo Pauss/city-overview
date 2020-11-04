@@ -18,7 +18,7 @@ class Searcher {
     { placeType: 'movie_theater', placeData: {} },
     { placeType: 'park', placeData: {} },
     { placeType: 'secondary_school', placeData: {} },
-    { placeType: 'univeristy', placeData: {} },
+    { placeType: 'university', placeData: {} },
     { placeType: 'shopping_mall', placeData: {} },
     { placeType: 'supermarket', placeData: {} },
     { placeType: 'zoo', placeData: {} },

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import Debug from 'debug'
 import {} from 'dotenv/config.js'
 
-const debug = Debug('mongoDB')
+const debug = Debug('db-connection')
 
 const db_connect = {
   url_db: `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@localhost:${process.env.DB_PORT}/city-overview?authSource=admin`,
